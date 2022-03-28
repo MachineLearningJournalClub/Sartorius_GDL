@@ -1,14 +1,11 @@
 import h5py
 import matplotlib.pyplot as plt
+import torch
+import numpy as np
 
 with h5py.File('mydataset.hdf5','r') as f:
-    outputs = f['delta_map']
-    inputs = f['train']
-    for i in range(5):
-       i = 1
-       plt.figure(figsize = (12,12))
-       #plt.subplot(1,2,1)
-       #plt.imshow(outputs[i,:,:,0])
-       #plt.subplot(1,2,2)
-       plt.imshow(inputs[i,:,:])
-       plt.show()
+    outputs = torch.Tensor(np.asarray(f['delta_map']))
+    inputs = torch.Tensor(np.asarray(f['train']))
+    yolo = outputs[:,:,:,-1]
+    print((yolo > 0).sum())
+    print((yolo <= 0).sum())
